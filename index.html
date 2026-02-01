@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Michael & Dreena | Dec 26, 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Montserrat:wght@300;400;500&family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --cream: #FDFBF7; --beige: #F5F0E6; --tan: #D4C3A3; --mocha: #5E503F; --olive: #525B44;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--cream); color: var(--mocha); scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
+        
+        /* SHINY TEXT ANIMATION */
+        .shiny-name {
+            display: inline-block;
+            background: linear-gradient(120deg, var(--mocha) 0%, var(--mocha) 35%, #ffffff 50%, var(--mocha) 65%, var(--mocha) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+            font-weight: 500;
+        }
+
+        @keyframes shine {
+            0% { background-position: 150% center; }
+            100% { background-position: -50% center; }
+        }
+
+        /* BEIGE PULSE & FLOAT ANIMATION */
+        @keyframes beigeBreath {
+            0% { box-shadow: 0 5px 15px rgba(212, 195, 163, 0.3); transform: translateY(0); border-color: var(--tan); }
+            50% { box-shadow: 0 15px 30px rgba(212, 195, 163, 0.8); transform: translateY(-5px); border-color: var(--mocha); }
+            100% { box-shadow: 0 5px 15px rgba(212, 195, 163, 0.3); transform: translateY(0); border-color: var(--tan); }
+        }
+
+        /* MUSIC GATE OVERLAY */
+        #music-gate {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--cream); z-index: 5000; display: flex;
+            flex-direction: column; justify-content: center; align-items: center;
+            transition: 0.8s ease-in-out; text-align: center; padding: 20px;
+        }
+        .gate-btn {
+            padding: 15px 40px; border: 1px solid var(--tan); background: white;
+            font-family: 'Cormorant Garamond', serif; letter-spacing: 3px;
+            cursor: pointer; margin-top: 20px; text-transform: uppercase;
+        }
+
+        /* FLOATING MUSIC CONTROL */
+        #music-control {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1000;
+            background: rgba(255,255,255,0.9); padding: 10px; border-radius: 50px;
+            border: 1px solid var(--tan); display: none; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Navigation */
+        .nav-header { position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; z-index: 1000; background: rgba(253, 251, 247, 0.95); box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .menu-btn { font-size: 1.5rem; cursor: pointer; color: var(--mocha); border: none; background: none; }
+        .side-menu { position: fixed; top: 0; right: -100%; width: 280px; height: 100%; background: var(--cream); transition: 0.4s; z-index: 2000; padding: 60px 30px; display: flex; flex-direction: column; box-shadow: -10px 0 20px rgba(0,0,0,0.1); }
+        .side-menu.active { right: 0; }
+        .side-menu a { text-decoration: none; color: var(--mocha); font-size: 0.9rem; margin: 12px 0; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid transparent; }
+
+        /* Hero */
+        .hero { height: 100vh; background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('https://i.imgur.com/3deZEDh.jpeg') center/cover; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; text-align: center; }
+        .hero h1 { font-family: 'Great Vibes', cursive; font-size: clamp(3rem, 12vw, 4.5rem); text-shadow: 2px 2px 10px rgba(0,0,0,0.4); }
+        
+        /* Countdown & Calendar */
+        .timer-box { background: var(--beige); padding: 20px; border-radius: 12px; margin: 20px auto; max-width: 400px; width: 90%; font-weight: 600; text-align: center; border: 1px solid var(--tan); animation: beigeBreath 4s ease-in-out infinite; }
+        .calendar-box { text-align: center; margin: 20px auto; padding: 20px; background: #FAFAFA; display: inline-block; border: 1px solid var(--tan); border-radius: 8px; animation: beigeBreath 4s ease-in-out infinite; animation-delay: 1s; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; font-size: 0.8rem; margin-top: 10px; }
+        .highlight { border: 2px dashed #d44d5c; border-radius: 50%; padding: 2px; color: #d44d5c; font-weight: bold; }
+
+        /* SCHEDULE / LOCATION CARDS */
+        #schedule { background: var(--beige); padding: 40px 10px; }
+        .loc-card { background: white; padding: 30px 20px; border-radius: 15px; margin: 20px auto; max-width: 500px; border: 1px solid var(--tan); text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .loc-card h2 { font-family: 'Great Vibes', cursive; font-size: 2.8rem; margin-bottom: 10px; color: var(--mocha); }
+        .map-btn { display: inline-block; margin-top: 15px; padding: 12px 25px; background: var(--olive); color: white; text-decoration: none; border-radius: 25px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; }
+
+        /* Entourage */
+        .entourage-section { padding: 60px 10px; text-align: center; width: 100%; max-width: 100vw; }
+        .entourage-row { display: flex; justify-content: center; margin-bottom: 25px; width: 100%; }
+        .left-col { flex: 1; text-align: right; border-right: 1px solid var(--tan); padding-right: 15px; }
+        .right-col { flex: 1; text-align: left; padding-left: 15px; }
+        .centered-label { display: block; text-align: center; font-family: 'Cormorant Garamond', serif; font-weight: bold; letter-spacing: 2px; margin-bottom: 15px; text-transform: uppercase; border-bottom: 1px solid var(--tan); width: fit-content; margin-left: auto; margin-right: auto; padding-bottom: 5px; }
+        .role-header { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; display: block; margin-bottom: 5px; color: var(--mocha); }
+        .name-text { font-size: 0.85rem; line-height: 1.5; display: block; margin-bottom: 2px; word-wrap: break-word; overflow-wrap: break-word; }
+
+        /* Gallery */
+        .gallery-container { height: 450px; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; transform-style: preserve-3d; perspective: 1200px; overflow: hidden; }
+        .gallery-ring { position: relative; width: 180px; height: 240px; transform-style: preserve-3d; transition: transform 0.5s ease-out; animation: ringRotate 25s linear infinite; }
+        .gallery-ring:hover { animation-play-state: paused; }
+        .gallery-item-3d { position: absolute; width: 180px; height: 240px; object-fit: cover; border-radius: 10px; border: 3px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.2); -webkit-box-reflect: below 8px linear-gradient(transparent, rgba(0,0,0,0.1)); }
+        .gallery-item-3d:nth-child(1) { transform: rotateY(0deg) translateZ(280px); }
+        .gallery-item-3d:nth-child(2) { transform: rotateY(60deg) translateZ(280px); }
+        .gallery-item-3d:nth-child(3) { transform: rotateY(120deg) translateZ(280px); }
+        .gallery-item-3d:nth-child(4) { transform: rotateY(180deg) translateZ(280px); }
+        .gallery-item-3d:nth-child(5) { transform: rotateY(240deg) translateZ(280px); }
+        .gallery-item-3d:nth-child(6) { transform: rotateY(300deg) translateZ(280px); }
+        
+        @keyframes ringRotate { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+
+        /* Dress Code Marquee */
+        .logoloop-container { width: 100%; overflow: hidden; padding: 20px 0; position: relative; }
+        .logoloop-track { display: flex; width: max-content; animation: marquee 20s linear infinite; }
+        .logo-item { display: flex; align-items: center; gap: 12px; margin: 0 40px; font-family: 'Cormorant Garamond', serif; font-weight: 600; color: var(--mocha); text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem; }
+        .color-dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex-shrink: 0; }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* RSVP */
+        .rsvp-form { background: white; padding: 30px 20px; border-radius: 15px; max-width: 450px; width: 90%; margin: 20px auto; border: 1px solid var(--tan); box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        input, select, textarea { width: 100%; padding: 15px; margin-bottom: 12px; border: 1px solid var(--tan); border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 16px; }
+        .submit-btn { width: 100%; padding: 15px; background: var(--mocha); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; letter-spacing: 2px; transition: 0.3s; }
+
+        [data-aos] { opacity: 0; transform: translateY(20px); transition: 0.8s ease-out; }
+        [data-aos].active { opacity: 1; transform: translateY(0); }
+        
+        @media (max-width: 600px) {
+            .gallery-ring { width: 140px; height: 180px; }
+            .gallery-item-3d { width: 140px; height: 180px; }
+            .gallery-item-3d:nth-child(1) { transform: rotateY(0deg) translateZ(200px); }
+            .gallery-item-3d:nth-child(2) { transform: rotateY(60deg) translateZ(200px); }
+            .gallery-item-3d:nth-child(3) { transform: rotateY(120deg) translateZ(200px); }
+            .gallery-item-3d:nth-child(4) { transform: rotateY(180deg) translateZ(200px); }
+            .gallery-item-3d:nth-child(5) { transform: rotateY(240deg) translateZ(200px); }
+            .gallery-item-3d:nth-child(6) { transform: rotateY(300deg) translateZ(200px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="music-gate">
+        <h2 style="font-family: 'Great Vibes'; font-size: 3.5rem;">Michael & Dreena</h2>
+        <p style="letter-spacing: 3px; font-size: 0.8rem;">DECEMBER 26, 2025</p>
+        <button class="gate-btn" onclick="startExperience()">Enter Website</button>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="Theweddingsong.mp3" type="audio/mpeg">
+        <source src="Weddingmusic.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="music-control" onclick="toggleMusic()">
+        <span id="music-icon">🔊</span>
+    </div>
+
+    <div id="main-content" style="display:none;">
+        <header class="nav-header">
+            <div style="font-family: 'Cormorant Garamond'; font-weight: bold; letter-spacing: 1px;">M & D | 12.26.25</div>
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        </header>
+
+        <div class="side-menu" id="sideMenu">
+            <button class="menu-btn" style="align-self: flex-end;" onclick="toggleMenu()">✕</button>
+            <a href="#home" onclick="toggleMenu()">Home</a>
+            <a href="#schedule" onclick="toggleMenu()">Schedule</a>
+            <a href="#entourage" onclick="toggleMenu()">Entourage</a>
+            <a href="#dresscode" onclick="toggleMenu()">Dress Code</a>
+            <a href="#rsvp" onclick="toggleMenu()">RSVP</a>
+            <a href="#gallery" onclick="toggleMenu()">Gallery</a>
+        </div>
+
+        <section class="hero" id="home">
+            <h1 class="split-animate">Michael & Dreena</h1>
+            <p class="split-animate" style="letter-spacing: 5px; margin-top: 10px; font-size: 0.8rem;">WE ARE GETTING MARRIED</p>
+        </section>
+
+        <section style="padding: 60px 20px; text-align: center;">
+            <p style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.2rem; margin-bottom: 5px; letter-spacing: 1px;">Days until we say I do</p>
+            <div class="timer-box" id="timer">00d : 00h : 00m : 00s</div>
+            <div class="calendar-box" data-aos>
+                <div style="font-weight: bold; border-bottom: 1px solid var(--tan); padding-bottom: 5px;">DECEMBER 2025</div>
+                <div class="cal-grid">
+                    <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+                    <span></span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+                    <span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span>
+                    <span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span>
+                    <span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span class="highlight">26</span><span>27</span>
+                    <span>28</span><span>29</span><span>30</span><span>31</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="schedule">
+            <div class="loc-card" data-aos>
+                <h2>The Ceremony</h2>
+                <p><strong>10:00 AM</strong></p>
+                <p>St Joseph Husband of Mary Parish church</p>
+                <p style="font-size: 0.8rem;">Aritao, Nueva Vizcaya</p>
+                <a href="https://maps.google.com" target="_blank" class="map-btn">VIEW ON MAPS</a>
+            </div>
+
+            <div class="loc-card" data-aos>
+                <h2>The Reception</h2>
+                <p><strong>11:00 AM</strong></p>
+                <p>RVS Skyview and Nature Park</p>
+                <p style="font-size: 0.8rem;">Aritao, Nueva Vizcaya</p>
+                <a href="https://maps.google.com" target="_blank" class="map-btn">VIEW ON MAPS</a>
+            </div>
+        </section>
+
+        <section id="entourage" class="entourage-section">
+            <h3 class="centered-label" style="font-size: 1.5rem; margin-bottom: 40px;">Wedding Entourage</h3>
+            
+            <div style="margin-bottom: 30px;">
+                <span class="role-header">Parents of the Groom</span>
+                <span class="name-text split-animate">Michael Damasco Sr and Violeta Damasco</span>
+                <br>
+                <span class="role-header">Parents of the Bride</span>
+                <span class="name-text split-animate">Samuel Fabian Sr and Virginia Fabian</span>
+            </div>
+
+            <div style="margin: 40px 0; color: var(--tan);">❀</div>
+            
+            <span class="centered-label">Principal Sponsors</span>
+            <div class="entourage-row" data-aos>
+                <div class="left-col">
+                    <span class="name-text shiny-name">Mr. Reginaldo Peñaflor Jr</span>
+                    <span class="name-text shiny-name">Mr. Remel Santos</span>
+                    <span class="name-text shiny-name">Mr. Rudy Mabunga</span>
+                    <span class="name-text shiny-name">Mr. Johnny Manuel</span>
+                    <span class="name-text shiny-name">Mr. Alex Bueno</span>
+                    <span class="name-text shiny-name">Mrs. Lovelyn Cabanag</span>
+                    <span class="name-text shiny-name">Mrs. Lorna Simpliciano</span>
+                    <span class="name-text shiny-name">Mrs. Corazon Meneses</span>
+                </div>
+                <div class="right-col">
+                    <span class="name-text shiny-name">Mrs. Jennifer Sia Quijano</span>
+                    <span class="name-text shiny-name">Ms. Jesusa Calica</span>
+                    <span class="name-text shiny-name">Mrs. Cecilia Azada</span>
+                    <span class="name-text shiny-name">Mrs. Erly Liwag</span>
+                    <span class="name-text shiny-name">Ms. Marietta Calica</span>
+                    <span class="name-text shiny-name">Mrs. Laila Dacumos</span>
+                    <span class="name-text shiny-name">Mrs. Emily Acosta</span>
+                    <span class="name-text shiny-name">Mrs. Rhodelyn Balao</span>
+                </div>
+            </div>
+
+            <div style="margin: 30px 0; color: var(--tan);">❀</div>
+
+            <span class="centered-label">Secondary Sponsors</span>
+            <div class="entourage-row" data-aos>
+                <div class="left-col">
+                    <span class="role-header">Bestman</span>
+                    <span class="name-text shiny-name">Mikhail Angelo Damasco</span>
+                    <br>
+                    <span class="role-header">Groomsmen</span>
+                    <span class="name-text shiny-name">Marvin Damasco</span>
+                    <span class="name-text shiny-name">John Drex Zuzon</span>
+                    <br>
+                    <span class="role-header">Candle</span>
+                    <span class="name-text shiny-name">Niro Zuriel Fabian</span>
+                    <span class="name-text shiny-name">Mylene Sarmiento</span>
+                </div>
+                <div class="right-col">
+                    <span class="role-header">Maid of Honor</span>
+                    <span class="name-text shiny-name">Roselyn Calica</span>
+                    <br>
+                    <span class="role-header">Bridesmaids</span>
+                    <span class="name-text shiny-name">Micah Kate Barbieto</span>
+                    <span class="name-text shiny-name">Preia Mariel Ragojo</span>
+                    <br>
+                    <span class="role-header">Cord</span>
+                    <span class="name-text shiny-name">Henzon Peñaflor</span>
+                    <span class="name-text shiny-name">Irish Mae Fabian</span>
+                </div>
+            </div>
+
+            <div data-aos style="margin-bottom: 25px;">
+                <span class="role-header">Veil</span>
+                <span class="name-text shiny-name">Marlou Rod Linsangan & Reylyn Grace Fabian</span>
+            </div>
+
+            <span class="centered-label">Bearers</span>
+            <div data-aos style="margin-bottom: 25px;">
+                <span class="role-header">Bible Bearer</span>
+                <span class="name-text shiny-name">Nael Zachary Fabian</span>
+                <br>
+                <span class="role-header">Ring Bearer</span>
+                <span class="name-text shiny-name">Dwayne Darrein Unida</span>
+                <br>
+                <span class="role-header">Coin Bearer</span>
+                <span class="name-text shiny-name">Jacelord Brylle Obciana</span>
+            </div>
+        </section>
+
+        <section id="dresscode" style="padding: 60px 0; text-align: center; background: var(--beige);">
+            <h3 class="centered-label">Dress Code</h3>
+            <p style="font-size: 0.8rem; font-weight: 600; margin-bottom: 20px; letter-spacing: 2px;">CLASSIC + ELEGANT SEMI-FORMAL</p>
+            
+            <div class="logoloop-container">
+                <div class="logoloop-track">
+                    <div class="logo-item"><div class="color-dot" style="background:#FDFBF7;"></div> Cream</div>
+                    <div class="logo-item"><div class="color-dot" style="background:#F5F0E6;"></div> Beige</div>
+                    <div class="logo-item"><div class="color-dot" style="background:#D4C3A3;"></div> Tan</div>
+                    <div class="logo-item"><div class="color-dot" style="background:#5E503F;"></div> Mocha</div>
+                    <div class="logo-item"><div class="color-dot" style="background:#525B44;"></div> Olive</div>
+                    <div class="logo-item"><div class="color-dot" style="background:#FDFBF7;"></div> Cream</div>
+                    <div class="logo-item"><div class="color-dot" style="background:#F5F0E6;"></div> Beige</div>
+                    <div class="logo-item"><div class="color-dot" style="background:#D4C3A3;"></div> Tan</div>
+                    <div class="logo-item"><div class="color-dot" style="background:#5E503F;"></div> Mocha</div>
+                    <div class="logo-item"><div class="color-dot" style="background:#525B44;"></div> Olive</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rsvp" style="padding: 60px 20px;">
+            <h2 style="font-family: 'Great Vibes', cursive; font-size: 3rem; text-align: center;">RSVP</h2>
+            <div class="rsvp-form" data-aos>
+                <form action="https://formspree.io/f/mbdylwqp" method="POST">
+                    <input type="text" name="Guest Name" placeholder="Full Name" required>
+                    <select name="Attendance Status" required>
+                        <option value="">Will you be attending?</option>
+                        <option value="Yes">Yes, I'll be there!</option>
+                        <option value="No">Regretfully, no.</option>
+                    </select>
+                    <textarea name="Message" placeholder="A message for the couple"></textarea>
+                    <button type="submit" class="submit-btn">SEND RSVP</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="gallery" style="padding: 80px 0; background: var(--beige); overflow: hidden;">
+            <h2 style="font-family: 'Great Vibes', cursive; font-size: 3rem; text-align: center; margin-bottom: 40px;">Our Moments</h2>
+            <div class="gallery-container">
+                <div class="gallery-ring" id="galleryRing">
+                    <img src="https://i.imgur.com/3deZEDh.jpeg" class="gallery-item-3d">
+                    <img src="https://i.imgur.com/BzS7Ai0.jpeg" class="gallery-item-3d">
+                    <img src="https://i.imgur.com/ywlRPSE.jpeg" class="gallery-item-3d">
+                    <img src="https://i.imgur.com/2tbdVdF.jpeg" class="gallery-item-3d">
+                    <img src="https://i.imgur.com/8gKnI47.jpeg" class="gallery-item-3d">
+                    <img src="https://i.imgur.com/bfwoiiX.jpeg" class="gallery-item-3d">
+                </div>
+            </div>
+        </section>
+
+        <footer style="padding: 40px 20px; text-align: center; background: var(--mocha); color: white; font-size: 0.7rem; letter-spacing: 1px; line-height: 1.5;">
+            #reMichaelbledaywithDreena | DECEMBER 26, 2025
+        </footer>
+    </div>
+
+    <script>
+        const audio = document.getElementById('bg-music');
+        const gate = document.getElementById('music-gate');
+        const main = document.getElementById('main-content');
+        const musicCtrl = document.getElementById('music-control');
+        const icon = document.getElementById('music-icon');
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        function startExperience() {
+            audio.play().catch(e => console.log("Play blocked"));
+            gate.style.opacity = '0';
+            setTimeout(() => {
+                gate.style.display = 'none';
+                main.style.display = 'block';
+                musicCtrl.style.display = 'block';
+                window.scrollTo(0, 0);
+                initAnimations();
+                ScrollTrigger.refresh();
+            }, 800);
+        }
+
+        function initAnimations() {
+            document.querySelectorAll('.split-animate').forEach(el => {
+                const text = el.innerText;
+                el.innerHTML = '';
+                const chars = text.split('').map(char => {
+                    const span = document.createElement('span');
+                    span.innerText = char;
+                    span.style.opacity = '0';
+                    span.style.transform = 'translateY(40px)';
+                    span.style.display = 'inline-block';
+                    if (char === ' ') span.innerHTML = '&nbsp;'; 
+                    el.appendChild(span);
+                    return span;
+                });
+                const isHero = el.closest('.hero') !== null;
+                gsap.to(chars, {
+                    scrollTrigger: isHero ? null : {
+                        trigger: el,
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    },
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.25,
+                    ease: "power3.out",
+                    stagger: 0.05,
+                    delay: isHero ? 0.2 : 0
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('active');
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('[data-aos]').forEach(el => observer.observe(el));
+        }
+
+        function toggleMusic() {
+            if (audio.paused) { audio.play(); icon.innerText = "🔊"; } 
+            else { audio.pause(); icon.innerText = "🔈"; }
+        }
+
+        function toggleMenu() { document.getElementById('sideMenu').classList.toggle('active'); }
+        
+        const weddingDate = new Date("Dec 26, 2025 10:00:00").getTime();
+        setInterval(function() {
+            const now = new Date().getTime();
+            const diff = weddingDate - now;
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diff % (1000 * 60)) / 1000);
+            const timerEl = document.getElementById("timer");
+            if(timerEl) timerEl.innerHTML = d + "d : " + h + "h : " + m + "m : " + s + "s";
+        }, 1000);
+
+        let scrollRotation = 0;
+        window.addEventListener('wheel', (e) => {
+            const ring = document.getElementById('galleryRing');
+            if(ring && main.style.display !== 'none') {
+                scrollRotation += e.deltaY * 0.1;
+                ring.style.transform = `rotateY(${scrollRotation}deg)`;
+            }
+        });
+
+        let touchX = 0;
+        window.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; });
+        window.addEventListener('touchmove', (e) => {
+            const ring = document.getElementById('galleryRing');
+            if(ring && main.style.display !== 'none') {
+                let delta = touchX - e.touches[0].clientX;
+                scrollRotation -= delta * 0.5;
+                ring.style.transform = `rotateY(${scrollRotation}deg)`;
+                touchX = e.touches[0].clientX;
+            }
+        });
+    </script>
+</body>
+</html>
